@@ -1,0 +1,11 @@
+# Invoice line layout (Invoice Ninja UI)
+#
+# Service column (`product_key`):
+Software Engineering / Development hourly
+
+# Description column (`notes` — one line per local calendar day from time_log):
+Mar 16, 2026 8hs
+Mar 17, 2026 8hs
+Mar 18, 2026 8hs
+Mar 19, 2026 8hs
+Mar 20, 2026 8hs
