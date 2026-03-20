@@ -1,4 +1,4 @@
-// Shared helpers and re-exports for Invoice Ninja CLI scripts.
+// Shared helpers and re-exports for the interactive CLI (`ninja`).
 
 export 'package:invoice_ninja_client/invoice_ninja_client.dart';
 

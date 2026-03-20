@@ -57,6 +57,7 @@ void main() {
           }),
         );
       final mem = MemoryTokenStore();
+      ProfileStore(file: f, tokenStore: mem).load();
       expect(mem.read('a'), 'secret-token');
       final v2 = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
       final profilesV2 = v2['profiles']! as Map<String, dynamic>;

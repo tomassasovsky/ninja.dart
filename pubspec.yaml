@@ -1,8 +1,8 @@
 name: invoice_ninja_scripts
-description: CLI scripts for Invoice Ninja (uses package invoice_ninja_client).
+description: Interactive Invoice Ninja CLI (`ninja`) and shared library (uses package invoice_ninja_client).
 version: 1.0.0
 publish_to: none
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/tomassasovsky/invoice-ninja-scripts
 
 executables:
   ninja: ninja
@@ -10,7 +10,6 @@ executables:
 environment:
   sdk: ^3.10.1
 
-# Add regular dependencies here.
 dependencies:
   args: ^2.5.0
   cli_completion: ^0.5.1
