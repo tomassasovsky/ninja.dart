@@ -47,7 +47,8 @@ Future<void> runInteractiveCli(
         _MainAction.createClient => 'Create client',
         _MainAction.createProject => 'Create project',
         _MainAction.lookupUser => 'Look up user',
-        _MainAction.createTask => 'Create task (weekday time log)',
+        _MainAction.createTask =>
+          'Create task (Argentina business-day time log)',
         _MainAction.invoiceFromTask => 'Create draft invoice from task',
         _MainAction.exit => 'Exit',
       },

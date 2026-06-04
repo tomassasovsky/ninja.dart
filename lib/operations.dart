@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:invoice_ninja_client/invoice_ninja_client.dart';
 
 import 'package:invoice_ninja_scripts/api_time.dart';
+import 'package:invoice_ninja_scripts/argentina_holidays_remote.dart';
 import 'package:invoice_ninja_scripts/date_hints.dart';
 import 'package:invoice_ninja_scripts/invoice_line_notes.dart';
 import 'package:invoice_ninja_scripts/task_invoice.dart';
@@ -64,6 +65,14 @@ class InvoiceNinjaOps {
     required int startHour,
     required int endHour,
   }) async {
+    final years = <int>{};
+    for (final (a, b) in ranges) {
+      years
+        ..add(a.year)
+        ..add(b.year);
+    }
+    await refreshArgentinaHolidaysRemote(years);
+
     final timeLog = buildWeekdayTimeLog(
       ranges: ranges,
       startHour: startHour,

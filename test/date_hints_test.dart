@@ -1,7 +1,24 @@
+import 'package:invoice_ninja_scripts/argentina_holidays.dart';
 import 'package:invoice_ninja_scripts/date_hints.dart';
 import 'package:test/test.dart';
 
 void main() {
+  setUp(clearArgentinaRemoteCalendarOverrides);
+
+  group('nextArgentinaBusinessDayAfter', () {
+    test('skips Carnival 2026 (Feb 16–17)', () {
+      // After Friday Feb 13 → skip weekend and Mon–Tue Carnival → Wed Feb 18.
+      final fri = DateTime(2026, 2, 13);
+      expect(nextArgentinaBusinessDayAfter(fri), DateTime(2026, 2, 18));
+    });
+
+    test('skips tourism bridge 2026-03-23 and Memoria 2026-03-24', () {
+      final sun = DateTime(2026, 3, 22);
+      // After Sun 22 → Mon 23 (tourism) and Tue 24 (Memoria) skipped → Wed 25.
+      expect(nextArgentinaBusinessDayAfter(sun), DateTime(2026, 3, 25));
+    });
+  });
+
   group('nextWeekdayAfter', () {
     test('skips weekend after Friday', () {
       final fri = DateTime(2026, 3, 13); // Friday

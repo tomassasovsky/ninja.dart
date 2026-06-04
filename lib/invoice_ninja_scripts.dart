@@ -2,6 +2,8 @@
 
 export 'package:invoice_ninja_client/invoice_ninja_client.dart';
 
+export 'argentina_holidays.dart';
+export 'argentina_holidays_remote.dart';
 export 'cli_common.dart';
 export 'date_hints.dart';
 export 'interactive/cli.dart' show runInteractiveCli;

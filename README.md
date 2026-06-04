@@ -101,7 +101,9 @@ Built with [`mason_logger`](https://pub.dev/packages/mason_logger): spinners whi
 dart run bin/ninja.dart
 ```
 
-You pick **clients, projects, users, and tasks** from lists (no raw IDs). New tasks default their description from the **most recently updated task on the same project**. **Date ranges** use the latest invoice with task lines for that client: calendar coverage from `time_log`, default start = next **weekday** after that span (clamped to today if needed), default end = **today**. Rate and hours default from that invoice (rate from the first task line; hours from the **earliest** `time_log` segment, local time).
+You pick **clients, projects, users, and tasks** from lists (no raw IDs). New tasks default their description from the **most recently updated task on the same project**. **Date ranges** use the latest invoice with task lines for that client: calendar coverage from `time_log`, default start = next **Argentina business day** after that span (weekdays excluding national public holidays and decreed tourism non-working days; clamped to today if needed), default end = **today**. Rate and hours default from that invoice (rate from the first task line; hours from the **earliest** `time_log` segment, local time).
+
+**Argentina calendar:** On create-task, the CLI refreshes feriados from the [ArgentinaDatos](https://argentinadatos.com) JSON API (`GET /v1/feriados/{año}`), caches responses under your app config directory (24h TTL), and falls back to built-in rules if the network is unavailable. Official government pages are not scraped (they are brittle and often block automated clients). To disable network and use only embedded logic: `INVOICE_NINJA_SKIP_FERIADOS_REMOTE=1`.
 
 ### Shell completion
 

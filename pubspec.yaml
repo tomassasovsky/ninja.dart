@@ -12,6 +12,7 @@ environment:
 
 dependencies:
   args: ^2.5.0
+  http: ^1.2.2
   cli_completion: ^0.5.1
   diacritic: ^0.1.6
   ffi: ^2.1.0

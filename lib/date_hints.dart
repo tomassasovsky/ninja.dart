@@ -2,6 +2,8 @@
 /// @docImport 'package:invoice_ninja_client/src/models/invoice.dart';
 library;
 
+import 'package:invoice_ninja_scripts/argentina_holidays.dart';
+
 export 'package:invoice_ninja_client/invoice_ninja_client.dart'
     show parseApiCalendarDate;
 
@@ -53,6 +55,22 @@ class PreviousInvoiceDateHint {
 DateTime nextWeekdayAfter(DateTime day) {
   var n = DateTime(day.year, day.month, day.day).add(const Duration(days: 1));
   while (n.weekday == DateTime.saturday || n.weekday == DateTime.sunday) {
+    n = n.add(const Duration(days: 1));
+  }
+  return n;
+}
+
+/// First Argentina business day strictly after [day]: skips weekends,
+/// national public holidays, and (by default) decreed tourism non-working days.
+DateTime nextArgentinaBusinessDayAfter(
+  DateTime day, {
+  bool includeTourismBridges = true,
+}) {
+  var n = DateTime(day.year, day.month, day.day).add(const Duration(days: 1));
+  while (!isArgentinaBusinessDay(
+    n,
+    includeTourismBridges: includeTourismBridges,
+  )) {
     n = n.add(const Duration(days: 1));
   }
   return n;

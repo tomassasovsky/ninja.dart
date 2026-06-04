@@ -1,17 +1,29 @@
 import 'package:invoice_ninja_client/invoice_ninja_client.dart';
 
-/// Builds `[[startUnix, endUnix], ...]` for weekdays between [ranges]
-/// inclusive, [startHour]–[endHour] local time each day.
+import 'package:invoice_ninja_scripts/argentina_holidays.dart';
+
+/// Builds `[[startUnix, endUnix], ...]` for each business day in [ranges]
+/// inclusive (weekdays excluding Argentina's national calendar: public
+/// holidays and, when [includeArgentinaTourismBridges] is true, decreed
+/// tourism non-working days), [startHour]–[endHour] local time each day.
 List<List<int>> buildWeekdayTimeLog({
   required List<(DateTime, DateTime)> ranges,
   required int startHour,
   required int endHour,
+  bool useArgentinaOfficialCalendar = true,
+  bool includeArgentinaTourismBridges = true,
 }) {
   final entries = <List<int>>[];
   for (final (from, to) in ranges) {
     var d = from;
     while (!d.isAfter(to)) {
-      if (d.weekday <= DateTime.friday) {
+      final countDay = useArgentinaOfficialCalendar
+          ? isArgentinaBusinessDay(
+              d,
+              includeTourismBridges: includeArgentinaTourismBridges,
+            )
+          : (d.weekday <= DateTime.friday);
+      if (countDay) {
         entries.add([
           DateTime(d.year, d.month, d.day, startHour).millisecondsSinceEpoch ~/
               1000,

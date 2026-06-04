@@ -1,4 +1,5 @@
 import 'package:invoice_ninja_client/invoice_ninja_client.dart';
+import 'package:invoice_ninja_scripts/argentina_holidays_remote.dart';
 import 'package:invoice_ninja_scripts/date_hints.dart';
 import 'package:invoice_ninja_scripts/interactive/pickers.dart';
 import 'package:invoice_ninja_scripts/interactive/prompt_helpers.dart';
@@ -72,6 +73,11 @@ Future<void> runCreateTaskFlow(
     hintProgress.complete();
   }
   final today = todayLocal();
+  await refreshArgentinaHolidaysRemote({
+    today.year,
+    if (invHint != null) invHint.coverageMax.year,
+  });
+
   if (invHint != null) {
     log.info(
       'Last invoice #${invHint.invoiceNumber} — calendar days covered by '
@@ -79,12 +85,13 @@ Future<void> runCreateTaskFlow(
       '${formatYmd(invHint.coverageMin)} → ${formatYmd(invHint.coverageMax)}.',
     );
     final suggested = clampStartToEnd(
-      nextWeekdayAfter(invHint.coverageMax),
+      nextArgentinaBusinessDayAfter(invHint.coverageMax),
       today,
     );
     log.detail(
-      'Suggested first range start (next weekday after that coverage, '
-      'clamped to today if needed): ${formatYmd(suggested)}.',
+      'Suggested first range start (next business day after that coverage '
+      '(Argentina calendar), clamped to today if needed): '
+      '${formatYmd(suggested)}.',
     );
     if (invHint.suggestedRate != null ||
         invHint.suggestedStartHour != null ||
@@ -121,8 +128,9 @@ Future<void> runCreateTaskFlow(
 
   final ranges = <(DateTime, DateTime)>[];
   log.info(
-    'Date ranges (weekdays only; inclusive YYYY-MM-DD). '
-    'Blank start when done.',
+    'Date ranges (Argentina business days only — weekdays excluding '
+    'national holidays and tourism non-working days when decreed; inclusive '
+    'YYYY-MM-DD). Blank start when done.',
   );
   var firstRange = true;
   while (true) {
@@ -130,7 +138,10 @@ Future<void> runCreateTaskFlow(
     if (firstRange) {
       if (invHint != null) {
         startDefault = formatYmd(
-          clampStartToEnd(nextWeekdayAfter(invHint.coverageMax), today),
+          clampStartToEnd(
+            nextArgentinaBusinessDayAfter(invHint.coverageMax),
+            today,
+          ),
         );
       } else {
         startDefault = formatYmd(today);
